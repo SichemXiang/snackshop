@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.snackshop.mapper.SsCategoryMapper">
+    <insert id="insert" parameterType="com.snackshop.entity.SsCategory">
+        insert into ss_category (category_name,category_sort)
+            values (#{categoryName},#{categorySort})
+    </insert>
+
+
+    <update id="update" parameterType="com.snackshop.entity.SsCategory">
+        update ss_category
+        <set>
+            <if test="categoryName != null">
+                category_name = #{categoryName},
+            </if>
+            <if test="categorySort != null">
+                category_sort = #{categorySort}
+            </if>
+        </set>
+        where category_id = #{categoryId}
+    </update>
+
+    <delete id="delete">
+        delete from ss_category where category_id = #{id}
+    </delete>
+
+
+    <select id="findPage" resultType="com.snackshop.entity.SsCategory">
+        select * from ss_category
+        <if test="queryString != null and queryString.length > 0">
+        </if>
+        ORDER BY category_sort
+    </select>
+
+    <select id="findCategoryAndGoods" resultType="java.util.Map">
+        SELECT *
+        FROM ss_category LEFT JOIN ss_goods
+        on ss_category.category_id = ss_goods.category_id
+    </select>
+
+
+    <select id="findList" resultType="com.snackshop.entity.SsCategory">
+        select * from ss_category
+        ORDER BY category_sort
+    </select>
+
+
+</mapper>

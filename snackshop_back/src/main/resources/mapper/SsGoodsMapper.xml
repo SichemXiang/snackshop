@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.snackshop.mapper.SsGoodsMapper">
+    <!--分页查询-->
+    <select id="findPage" resultType="com.snackshop.entity.SsGoods">
+        select * from ss_goods
+        <if test="queryString != null and queryString.length > 0">
+            where  goods_name like concat('%',#{queryString},'%') or goods_info like concat('%',#{queryString},'%')
+        </if>
+    </select>
+    <!--根据id查询-->
+    <select id="findById" resultType="com.snackshop.entity.SsGoods">
+        select * from ss_goods where goods_id = #{id}
+    </select>
+
+    <!--轮播图查询-->
+    <select id="findSwiper" resultType="com.snackshop.entity.SsGoods">
+        select * from ss_goods where goods_swiper = 1;
+    </select>
+
+    <!--热卖查询-->
+    <select id="findHot" resultType="com.snackshop.entity.SsGoods">
+        select * from ss_goods where goods_hot = 1 limit 8;
+    </select>
+
+
+    <!--根据分类id查询商品-->
+    <select id="findByCategoryId" resultType="com.snackshop.entity.SsGoods">
+        select * from ss_goods where category_id = #{id};
+    </select>
+
+
+    <!--添加商品-->
+    <insert id="insert" parameterType="com.snackshop.entity.SsGoods">
+        insert into ss_goods (goods_name,category_id,image,goods_info,goods_price,goods_total,goods_sales,goods_hot,goods_swiper,swiper_sort)
+            values (#{goodsName},#{categoryId},#{image},#{goodsInfo},#{goodsPrice},#{goodsTotal},#{goodsSales},#{goodsHot},#{goodsSwiper},#{swiperSort})
+    </insert>
+
+    <!--删除商品-->
+    <delete id="delete" parameterType="int">
+        delete from ss_goods where goods_id = #{id}
+    </delete>
+
+    <!--管理员修改商品-->
+    <update id="update" parameterType="com.snackshop.entity.SsGoods">
+        update ss_goods
+        <set>
+            <if test="goodsName != null">
+                goods_name = #{goodsName},
+            </if>
+            <if test="categoryId != null">
+                category_id = #{categoryId},
+            </if>
+            <if test="image != null">
+                image_id = #{image},
+            </if>
+            <if test="goodsInfo != null">
+                goods_info = #{goodsInfo},
+            </if>
+            <if test="goodsPrice != null">
+                goods_price = #{goodsPrice},
+            </if>
+            <if test="goodsTotal != null">
+                goods_total = #{goodsTotal},
+            </if>
+            <if test="goodsSales != null">
+                goods_sales = #{goodsSales}
+            </if>
+        </set>
+        where goods_id = #{goodsId}
+    </update>
+
+</mapper>

@@ -1,0 +1,62 @@
+
+spring:
+  datasource:
+    druid:
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      url: jdbc:mysql://localhost:3306/snack_shop?serverTimezone=UTC
+      username: root
+      password: 123456789xsz
+  #打开swagger
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+    static-path-pattern:
+    async:
+      request-timeout: 30000
+#      配置redis
+  redis:
+    #配置主机
+    host: 127.0.0.1
+    #配置使用的数据库
+    database: 0
+    #指定端口
+    port: 6379
+
+
+
+
+mybatis:
+  #mapper接口找的xml文件
+  mapper-locations: classpath:mapper/*.xml
+  type-aliases-package: com.snackshop.entity
+  configuration:
+    #打印日志
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    #驼峰命名
+    map-underscore-to-camel-case: true
+
+#jwt配置
+jwt:
+  #请求头部
+  tokenHeader: Authorization
+  secret: snackshop123
+#  过期时间
+  expiration: 1800
+#  token头部
+  tokenHead: 'Bearer '
+
+weixinpayconfig:
+  appid: wxcaf67fff4179e18f
+  mch_id: 1500625891
+  key: jrBXpyMVP1Y0FCFI42EBShLom7KMaRBa
+  url: https://api.mch.weixin.qq.com/pay/unifiedorder
+  notify_url: https://0c56-180-121-172-30.ngrok.io/weixinpay/notifyUrl
+
+
+
+#微信小程序
+wx:
+  #密钥
+  appid: wxcaf67fff4179e18f
+  secret: 20d8c466ced03061185d8ea5d5565623
+

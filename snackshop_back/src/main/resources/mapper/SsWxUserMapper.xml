@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.snackshop.mapper.SsWxUserMapper">
+
+    <select id="findPage" resultType="com.snackshop.entity.SsWxUser">
+        select id,wx_nickName,ss_wx_users.phone,open_id,wx_nickName,wx_avatarUrl,wx_status,CONCAT(province,city,distract,detail) as "userAddress"
+        from ss_wx_users left join  ss_user_address
+        on ss_wx_users.id = ss_user_address.wx_user_id
+    </select>
+    <select id="findByOpenId" resultType="com.snackshop.entity.SsWxUser">
+        select * from ss_wx_users where open_id = #{openId}
+    </select>
+
+
+    <insert id="insert" parameterType="com.snackshop.entity.SsWxUser">
+        insert into ss_wx_users(open_id,wx_status)
+            values (#{openId},#{wxStatus})
+    </insert>
+
+
+</mapper>
