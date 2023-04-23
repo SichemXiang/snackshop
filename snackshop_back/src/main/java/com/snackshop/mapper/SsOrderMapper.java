@@ -1,9 +1,11 @@
 package com.snackshop.mapper;
 
+
 import com.github.pagehelper.Page;
 import com.snackshop.entity.SsOrder;
 import org.apache.ibatis.annotations.Mapper;
-import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 /**
  * @Author: xsz
@@ -26,5 +28,32 @@ public interface SsOrderMapper {
      * 根据订单号查询订单
      */
     SsOrder findByOrderNum(String orderNum);
+
+    /**
+     * 修改订单
+     */
+    void update(SsOrder order);
+
+
+    List<SsOrder> findList();
+
+    List<SsOrder> findByType(Integer type);
+
+    /**
+     * 修改订单状态
+     */
+    void updateStatus(SsOrder ssOrder);
+
+    /**
+     * 删除订单
+     */
+    void delete(int orderId);
+
+    /**
+     * 根据ordernum 返回 orderId
+     */
+    int selectOrderIdByOrderNum(String orderNum);
+
+
 
 }

@@ -7,7 +7,9 @@
         values (#{orderId},#{goodsId},#{goodsNumber},#{goodsPrice},#{goodsName},#{goodsImage})
     </insert>
 
-
+    <delete id="deleteByOrderId">
+        delete from ss_order_detail where order_id = #{orderId}
+    </delete>
     <select id="findByOrderId" resultType="com.snackshop.entity.SsOrderDetail">
         select * from ss_order_detail where order_id = #{id}
     </select>

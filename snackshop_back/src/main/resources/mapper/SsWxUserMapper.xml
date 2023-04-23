@@ -4,9 +4,10 @@
 <mapper namespace="com.snackshop.mapper.SsWxUserMapper">
 
     <select id="findPage" resultType="com.snackshop.entity.SsWxUser">
-        select id,wx_nickName,ss_wx_users.phone,open_id,wx_nickName,wx_avatarUrl,wx_status,CONCAT(province,city,distract,detail) as "userAddress"
-        from ss_wx_users left join  ss_user_address
-        on ss_wx_users.id = ss_user_address.wx_user_id
+        select * from ss_wx_users
+        <if test="queryString != null and queryString.length > 0">
+            where  wx_nickName like concat('%',#{queryString},'%') or phone like concat('%',#{queryString},'%')
+        </if>
     </select>
     <select id="findByOpenId" resultType="com.snackshop.entity.SsWxUser">
         select * from ss_wx_users where open_id = #{openId}

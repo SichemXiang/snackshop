@@ -53,5 +53,20 @@ public interface SsGoodsMapper {
      */
     List<SsGoods> findByCategoryId(int id);
 
+    /**
+     * 根据商品名字模糊查询
+     */
+    List<SsGoods> findByLike(String string);
 
+    /**
+     * 设置热卖
+     */
+
+    void updateHot(int goodsId,boolean goodsHot);
+
+    /**
+     * 设计轮播图
+     */
+
+    void updateSwiper(int goodsId,boolean goodsSwiper);
 }

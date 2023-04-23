@@ -4,8 +4,8 @@
       <el-col :span="7">
         <el-input placeholder="请输入商品名称" v-model="queryForm.queryString" clearable></el-input>
       </el-col>
-      <el-button type="primary" :icon="Search" @click="findPage">搜索</el-button>
-      <el-button type="primary" :icon="Plus" @click="hadleDialog()">添加</el-button>
+      <el-button type="primary" :icon="Search" @click="findGoodsPage">搜索</el-button>
+      <el-button type="primary" :icon="Plus" @click="handleDialog()">添加</el-button>
     </el-row>
     <el-table :data="tableList" stripe style="width: 100%">
       <el-table-column type="index" label="序号" width="100" />
@@ -20,9 +20,25 @@
       <el-table-column prop="goodsPrice" label="价格" width="100" />
       <el-table-column prop="goodsTotal" label="库存" width="100" />
       <el-table-column prop="goodsSales" label="销量" width="100" />
-      <el-table-column  label="操作"  fixed="right">
+
+      <el-table-column prop="hot" label="热卖"  align="center">
         <template #default="scope">
-          <el-button  type="primary" :icon="Edit" size="small" @click="hadleDialog(scope.row.goodsId)"/>
+          <el-switch v-model="scope.row.goodsHot" @change="hotChangeHandle(scope.row)"></el-switch>
+        </template>
+      </el-table-column>
+
+      <el-table-column prop="swiper" label="轮播图"  align="center">
+        <template #default="scope">
+          <el-switch v-model="scope.row.goodsSwiper" @change="swiperChangeHandle(scope.row)"></el-switch>
+        </template>
+      </el-table-column>
+
+
+
+      <el-table-column  label="操作" width="200" fixed="right">
+        <template #default="scope">
+          <el-button type="success" size="small" @click="handleImageDialogValue(scope.row)">更换图片</el-button>
+          <el-button  type="primary" :icon="Edit" size="small" @click="handleDialog(scope.row.goodsId)"/>
           <el-button  type="danger" :icon="Delete" size="small" @click="deleteById(scope.row.goodsId)"/>
         </template>
       </el-table-column>
@@ -38,7 +54,8 @@
       @current-change="handleCurrentChange"
     />
   </el-card>
-  <Dialog v-model="dialogVisible" :dialogVisible="dialogVisible" :id="id" :dialogTitle="dialogTitle" @findPage="findPage"></Dialog>
+  <Dialog v-model="dialogVisible" :dialogVisible="dialogVisible" :id="id" :dialogTitle="dialogTitle" @findGoodsPage="findGoodsPage"></Dialog>
+  <imageDialog v-model="imageDialogVisible" :imageDialogValue="imageDialogValue" @findGoodsPage="findGoodsPage"></imageDialog>
 
 </template>
 
@@ -49,7 +66,11 @@ import { Search , Plus , Edit , Delete} from '@element-plus/icons-vue';
 import axios ,{getServerUrl}from "@/util/axios";
 import {ElMessage} from "element-plus";
 import {ElMessageBox} from "element-plus";
+// noinspection ES6UnusedImports
+import imageDialog from "@/views/goodsManage/components/imageDialog.vue";
 import Dialog from "@/views/goodsManage/components/dialog.vue";
+
+
 
 //搜索框内容
 const queryForm=ref({
@@ -62,19 +83,58 @@ const total = ref(0)
 const tableList = ref([])
 const dialogVisible=ref(false)
 const dialogTitle=ref('')
+const imageDialogVisible=ref(false)
 const id=ref(-1)
+const imageDialogValue = ref({})
+
+
+
+
 
 // 页面加载时分页查询
-const findPage = async()=>{
+const findGoodsPage = async()=>{
   const res = await axios.post("/goods/findPage",queryForm.value);
   tableList.value = res.data.rows;
   total.value = res.data.total;
 }
-findPage();
+findGoodsPage();
 
 
+const hotChangeHandle=async (row)=>{
+  let res=await axios.post("/goods/updateHot/"+row.goodsId+"/hot/"+row.goodsHot);
+  if(res.data.flag===true){
+    ElMessage({
+      type: 'success',
+      message: '执行成功!'
+    })
+  }else{
+    ElMessage({
+      type: 'error',
+      message: res.data.message,
+    })
+     await findGoodsPage();
+  }
+}
 
-const hadleDialog=(goodsId)=>{
+
+const swiperChangeHandle=async (row)=>{
+  let res=await axios.post("/goods/updateSwiper/"+row.goodsId+"/swiper/"+row.goodsSwiper);
+  if(res.data.flag===true){
+    ElMessage({
+      type: 'success',
+      message: '执行成功!'
+    })
+  }else{
+    ElMessage({
+      type: 'error',
+      message: res.data.message,
+    })
+    await findGoodsPage();
+  }
+}
+
+
+const handleDialog=(goodsId)=>{
   if(goodsId){
     id.value=goodsId;
     dialogTitle.value="商品修改"
@@ -83,6 +143,12 @@ const hadleDialog=(goodsId)=>{
     dialogTitle.value="商品添加"
   }
   dialogVisible.value=true
+}
+
+const handleImageDialogValue=(row)=>{
+  console.log("===============")
+  imageDialogVisible.value = true;
+  imageDialogValue.value=JSON.parse(JSON.stringify(row));
 }
 
 /**
@@ -102,7 +168,7 @@ const deleteById=(goodsId)=>{
       await axios.deleteData(`/goods/delete/${goodsId}`).then((res)=>{
         ElMessage.success(res.data.message);
         queryForm.value.pageNumber = 1;
-        findPage();
+        findGoodsPage();
       }).catch((error)=>{
         ElMessage.warning(error)
       })
@@ -112,18 +178,20 @@ const deleteById=(goodsId)=>{
 }
 
 
+
+
 //改变页面大小
 const handleSizeChange=(pageSize)=>{
   queryForm.value.pageNumber=1;
   queryForm.value.pageSize=pageSize;
-  findPage();
+  findGoodsPage();
 }
 
 
 //跳转指定页面
 const handleCurrentChange=(pageNumber)=>{
   queryForm.value.pageNumber=pageNumber;
-  findPage();
+  findGoodsPage();
 }
 
 </script>

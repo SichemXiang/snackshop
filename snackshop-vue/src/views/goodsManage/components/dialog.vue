@@ -1,7 +1,7 @@
 <template>
   <el-dialog
-    model-value="dialogVisible"
     :title="dialogTitle"
+    :model-value="dialogVisible"
     width="50%"
     @close="handleClose"
   >
@@ -24,7 +24,7 @@
       </el-form-item>
 
       <el-form-item label="商品类别">
-        <el-select v-model="categoryId"  @change="categoryChaege" placeholder="请选择商品类别...">
+        <el-select v-model="categoryId"  @change="categoryChange" placeholder="请选择商品类别...">
           <el-option
             v-for="item in categorySelectOptions"
             :key="item.categoryId"
@@ -150,7 +150,7 @@ const initCategorySelectList=async()=>{
 
 initCategorySelectList();
 
-const  categoryChaege=(cId)=>{
+const  categoryChange=(cId)=>{
   form.value.categoryId = cId;
 }
 
@@ -179,7 +179,7 @@ watch(
 )
 
 //调用子组件的方法
-const emits=defineEmits(['update:modelValue','findPage'])
+const emits=defineEmits(['update:modelValue','findGoodsPage'])
 
 //关闭dialog
 const handleClose=()=>{
@@ -200,11 +200,11 @@ const handleConfirm=()=>{
         return;
       }
       if(form.value.goodsId == null || form.value.goodsId == -1){
-        form.value.categoryId == categorySelectOptions.value.categoryId;
+        form.value.categoryId === categorySelectOptions.value.categoryId;
         await axios.post("/goods/insert",form.value).then((res)=>{
           ElMessage.success("执行成功！")
           formRef.value.resetFields();
-          emits("findPage")
+          emits("findGoodsPage")
           handleClose();
         })
       }else {
@@ -212,7 +212,7 @@ const handleConfirm=()=>{
           ElMessage.success("执行成功！")
           console.log(form.value)
           formRef.value.resetFields();
-          emits("findPage")
+          emits("findGoodsPage")
           handleClose();
         })
       }

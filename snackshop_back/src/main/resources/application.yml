@@ -45,12 +45,7 @@ jwt:
 #  token头部
   tokenHead: 'Bearer '
 
-weixinpayconfig:
-  appid: wxcaf67fff4179e18f
-  mch_id: 1500625891
-  key: jrBXpyMVP1Y0FCFI42EBShLom7KMaRBa
-  url: https://api.mch.weixin.qq.com/pay/unifiedorder
-  notify_url: https://0c56-180-121-172-30.ngrok.io/weixinpay/notifyUrl
+
 
 
 

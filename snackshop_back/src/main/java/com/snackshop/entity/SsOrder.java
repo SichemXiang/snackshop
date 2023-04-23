@@ -29,10 +29,10 @@ public class SsOrder {
     private String phoneNumber;
 
     @JsonSerialize(using = CustomDateTimeSerializer.class)
-    private Date createDate;
+    private Date createTime;
 
     @JsonSerialize(using = CustomDateTimeSerializer.class)
-    private Date payDate;
+    private Date payTime;
 
     private Integer orderStatus=1;
 

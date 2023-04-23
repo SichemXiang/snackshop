@@ -26,7 +26,13 @@ public class SsWxUser {
 
     private boolean wxStatus = true;
 
-    private String userAddress;
+
+    @JsonSerialize(using=CustomDateTimeSerializer.class)
+    private Date registerTime; // 注册日期
+
+    @JsonSerialize(using=CustomDateTimeSerializer.class)
+    private Date lastLoginTime; // 最后登录日期
+
 
 
 }

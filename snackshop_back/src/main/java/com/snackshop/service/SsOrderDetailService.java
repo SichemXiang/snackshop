@@ -14,4 +14,6 @@ public interface SsOrderDetailService {
      Result findByOrderId(int id);
 
      void insert(SsOrderDetail orderDetail);
+
+     void deleteByOrderId(int orderId);
 }

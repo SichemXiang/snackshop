@@ -55,7 +55,6 @@ public class SsUserServiceImpl implements SsUserService {
         log.info("判断用户是否存在，密码是否正确");
         if(null == userDetails || !passwordEncoder.matches(loginVo.getPassword(),userDetails.getPassword() )){
             return Result.fail("账号或密码错误，请重新输入");
-
         }
         if(!userDetails.isEnabled()){
             return Result.fail("该账号已禁用");
@@ -76,6 +75,18 @@ public class SsUserServiceImpl implements SsUserService {
     @Override
     public SsUser loadUserByUsername(String username) {
         return ssUserMapper.findByUsername(username);
+    }
+
+    /**
+     * 修改密码
+     * @param phone 电话
+     * @param password 新密嘛
+     * @return result
+     */
+    @Override
+    public Result updatePassword(String phone, String password) {
+        ssUserMapper.updatePassword(phone,password);
+        return Result.success("修改成功");
     }
 }
 

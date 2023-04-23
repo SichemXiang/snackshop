@@ -21,13 +21,17 @@
 
     <!--热卖查询-->
     <select id="findHot" resultType="com.snackshop.entity.SsGoods">
-        select * from ss_goods where goods_hot = 1 limit 8;
+        select * from ss_goods where goods_hot = 1 ;
     </select>
 
 
     <!--根据分类id查询商品-->
     <select id="findByCategoryId" resultType="com.snackshop.entity.SsGoods">
         select * from ss_goods where category_id = #{id};
+    </select>
+
+    <select id="findByLike" resultType="com.snackshop.entity.SsGoods">
+        select * from ss_goods where goods_name like concat('%',#{string},'%');
     </select>
 
 
@@ -53,7 +57,7 @@
                 category_id = #{categoryId},
             </if>
             <if test="image != null">
-                image_id = #{image},
+                image = #{image},
             </if>
             <if test="goodsInfo != null">
                 goods_info = #{goodsInfo},
@@ -67,6 +71,23 @@
             <if test="goodsSales != null">
                 goods_sales = #{goodsSales}
             </if>
+        </set>
+        where goods_id = #{goodsId}
+    </update>
+
+
+    <update id="updateHot">
+        update ss_goods
+        <set>
+            goods_hot = #{goodsHot}
+        </set>
+        where goods_id = #{goodsId}
+    </update>
+
+    <update id="updateSwiper">
+        update ss_goods
+        <set>
+            goods_swiper = #{goodsSwiper}
         </set>
         where goods_id = #{goodsId}
     </update>

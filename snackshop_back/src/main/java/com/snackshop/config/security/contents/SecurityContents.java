@@ -22,6 +22,7 @@ public class SecurityContents {
 
             //图片
             "/image/***",
+            "/goods/**",
 
             //小程序接口
             "/wxGoods/**",

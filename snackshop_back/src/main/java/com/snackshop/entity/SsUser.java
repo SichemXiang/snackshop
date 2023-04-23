@@ -1,6 +1,7 @@
 package com.snackshop.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -8,6 +9,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -20,6 +22,9 @@ import java.util.List;
 public class SsUser implements UserDetails {
     private int userId;
 
+    //电话号码，即登陆账号
+    private String phone;
+
     private String password;
 
     //网名
@@ -30,10 +35,6 @@ public class SsUser implements UserDetails {
     //前端展示的头像
     private String frontAvatar;
 
-
-    //电话号码，即登陆账号
-    private String phone;
-
     private boolean userStatus;
 
 
@@ -43,7 +44,6 @@ public class SsUser implements UserDetails {
     @JsonIgnore
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<GrantedAuthority> list = new ArrayList<>();
-
         list.add(new SimpleGrantedAuthority("ROLE_17843815004"));
         return list;
     }

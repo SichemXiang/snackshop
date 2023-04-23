@@ -28,7 +28,6 @@ public class SsWxUserServiceImpl implements SsWxUserService {
 
     @Override
     public Result findPage(Queryinfo queryinfo) {
-        log.info("开始商品数据分页-->页码{},-->页数{},-->查询内容{}",queryinfo.getPageNumber(),queryinfo.getPageSize(),queryinfo.getQueryString());
         PageHelper.startPage(queryinfo.getPageNumber(),queryinfo.getPageSize());
         Page<SsWxUser> page = wxUserMapper.findPage(queryinfo.getQueryString());
         long total = page.getTotal();

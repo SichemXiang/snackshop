@@ -32,6 +32,12 @@ public interface SsGoodsService {
 
     List<SsGoods> findByCategoryId(int id);
 
+    List<SsGoods> findByLike(String string);
+
+    Result updateHot(int id,boolean hot);
+
+    Result updateSwiper(int id,boolean swiper);
+
 
 
 }

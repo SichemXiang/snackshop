@@ -92,12 +92,18 @@ public class WxLoginController {
             wxUserService.insert(user);
         }
 
+        String avatar = wxUser.getWxAvatarUrl();
+        String nickName = wxUser.getWxNickName();
         String token = tokenUtil.generateWxToken(openid);
-        Map<String,String> map = new HashMap<>(2);
+        Map<String,Object> map = new HashMap<>(2);
+        Map<String,String> userInfoMap = new HashMap<>();
+        userInfoMap.put("avatar",avatar);
+        userInfoMap.put("nickName",nickName);
         map.put("tokenHead",tokenHead);
         map.put("token",token);
-        return Result.success("登陆成功！",map);
+        map.put("userInfo",userInfoMap);
 
+        return Result.success("登陆成功！",map);
 
     }
 

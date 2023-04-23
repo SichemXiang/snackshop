@@ -5,19 +5,84 @@
 
     <insert id="insert" parameterType="com.snackshop.entity.SsOrder">
         insert into ss_order(order_num,user_id,total_price,order_address,consignee,phone_number,create_time,pay_time,order_status)
-        values (#{orderNum},#{userId},#{totalPrice},#{orderAddress},#{consignee},#{phoneNumber},#{createDate},#{payDate},#{orderStatus})
+        values (#{orderNum},#{userId},#{totalPrice},#{orderAddress},#{consignee},#{phoneNumber},#{createTime},#{payTime},#{orderStatus})
     </insert>
+
+    <update id="update" parameterType="com.snackshop.entity.SsOrder">
+        update ss_order
+        <set>
+            <if test="orderNum != null">
+                order_num = #{orderNum},
+            </if>
+            <if test="userId != null">
+                user_id = #{userId},
+            </if>
+            <if test="totalPrice != null">
+                total_price = #{totalPrice},
+            </if>
+            <if test="orderAddress != null">
+                order_address = #{orderAddress},
+            </if>
+            <if test="consignee != null">
+                consignee = #{consignee},
+            </if>
+            <if test="phoneNumber != null">
+                phone_number = #{phoneNumber},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime},
+            </if>
+            <if test="payTime != null">
+                pay_time = #{payTime},
+            </if>
+            <if test="orderStatus != null">
+                order_status = #{orderStatus},
+            </if>
+        </set>
+        where order_num = #{orderNum}
+    </update>
+
+
+    <update id="updateStatus">
+        update ss_order
+        <set>
+            <if test="orderStatus != null">
+                order_status = #{orderStatus},
+            </if>
+        </set>
+        where order_id = #{orderId}
+    </update>
+
+    <delete id="delete">
+        delete from ss_order where order_id = #{orderId}
+    </delete>
 
 
     <select id="findOrder" resultType="com.snackshop.entity.SsOrder">
         select * from ss_order
         <if test="queryString != null and queryString.length > 0">
+            where  order_num like concat('%',#{queryString},'%') or consignee like concat('%',#{queryString},'%')
+                or phone_number like concat('%',#{queryString},'%')
         </if>
+        order by order_id desc
     </select>
 
     <select id="findByOrderNum" resultType="com.snackshop.entity.SsOrder">
         select * from ss_order
         where order_num = #{orderNum}
+    </select>
+
+    <select id="findList" resultType="com.snackshop.entity.SsOrder">
+        select * from ss_order order by order_id desc
+    </select>
+
+    <select id="findByType" resultType="com.snackshop.entity.SsOrder">
+        select * from ss_order
+        where order_status = #{type} order by order_id desc;
+    </select>
+
+    <select id="selectOrderIdByOrderNum" resultType="java.lang.Integer">
+        select order_id from ss_order where order_num = #{orderNum}
     </select>
 
 

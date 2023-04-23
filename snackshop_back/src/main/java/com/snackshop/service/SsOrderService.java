@@ -1,8 +1,11 @@
 package com.snackshop.service;
 
+import com.github.pagehelper.Page;
 import com.snackshop.entity.SsOrder;
 import com.snackshop.util.Queryinfo;
 import com.snackshop.util.Result;
+
+import java.util.List;
 
 /**
  * @Author: xsz
@@ -11,10 +14,21 @@ import com.snackshop.util.Result;
  **/
 public interface SsOrderService{
 
-    Result findOrder(Queryinfo queryinfo);
+    Page<SsOrder> findOrder(Queryinfo queryinfo);
 
     void insert(SsOrder ssOrder);
 
     SsOrder findByOrderNum(String orderNum);
 
+    void update(SsOrder ssOrder);
+
+    List<SsOrder> findList();
+
+    List<SsOrder>  findByType(Integer type);
+
+    Result updateStatus(SsOrder ssOrder);
+
+    void delete(int orderId);
+
+    int selectOrderIdByOrderNum(String orderNum);
 }

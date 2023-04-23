@@ -20,4 +20,7 @@ public interface SsUserService {
 
   //根据用户名（phone）获取用户对象
   SsUser loadUserByUsername(String username);
+
+  //修改密码
+  Result updatePassword(String phone,String password);
 }

@@ -15,7 +15,7 @@ class SnackshopBackApplicationTests {
 
     @Test
     void contextLoads(){
-        System.out.println(passwordEncoder.encode("123456"));
+        System.out.println(passwordEncoder.encode("555555"));
     }
 
 }

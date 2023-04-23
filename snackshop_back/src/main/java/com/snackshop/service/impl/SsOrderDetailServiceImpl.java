@@ -29,4 +29,9 @@ public class SsOrderDetailServiceImpl implements SsOrderDetailService {
     public void insert(SsOrderDetail orderDetail) {
         orderDetailMapper.insert(orderDetail);
     }
+
+    @Override
+    public void deleteByOrderId(int orderId) {
+        orderDetailMapper.deleteByOrderId(orderId);
+    }
 }

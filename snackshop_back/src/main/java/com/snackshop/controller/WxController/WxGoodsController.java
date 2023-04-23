@@ -1,5 +1,6 @@
 package com.snackshop.controller.WxController;
 
+import com.snackshop.entity.SsGoods;
 import com.snackshop.service.SsGoodsService;
 import com.snackshop.util.Result;
 import io.swagger.annotations.Api;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
 
 
 /**
@@ -42,6 +44,13 @@ public class WxGoodsController {
     @GetMapping("/detail/{id}")
     public Result findById(@PathVariable(value = "id" ) int id ){
         return goodsService.findById(id);
+    }
+
+    @ApiOperation(value = "根据商品名字模糊查询")
+    @GetMapping("/search")
+    public Result findByLike(String q){
+        List<SsGoods> list= goodsService.findByLike(q);
+        return Result.success("根据商品名字模糊查询成功",list);
     }
 
 

@@ -33,6 +33,7 @@ public class SsGoodsServiceImpl implements SsGoodsService {
         Page<SsGoods> page = ssGoodsMapper.findPage(queryinfo.getQueryString());
         long total = page.getTotal();
         List<SsGoods> result = page.getResult();
+        long pageNum = page.getPages();
         log.info("查询的总条数-->{}",total);
         log.info("分页列表--{}",result);
         return new PageResult(total,result);
@@ -75,6 +76,23 @@ public class SsGoodsServiceImpl implements SsGoodsService {
     @Override
     public List<SsGoods> findByCategoryId(int id) {
         return ssGoodsMapper.findByCategoryId(id);
+    }
+
+    @Override
+    public List<SsGoods> findByLike(String string) {
+        return ssGoodsMapper.findByLike(string);
+    }
+
+    @Override
+    public Result updateHot(int id, boolean hot) {
+        ssGoodsMapper.updateHot(id,hot);
+        return Result.success("设置热卖成功！");
+    }
+
+    @Override
+    public Result updateSwiper(int id, boolean swiper) {
+        ssGoodsMapper.updateSwiper(id,swiper);
+        return Result.success("设置轮播图成功！");
     }
 
 
