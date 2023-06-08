@@ -12,10 +12,7 @@ import java.util.List;
  * @DateTime: 2023/3/14 0:45
  **/
 public interface SsGoodsService {
-    /**
-     * 分页查询
-     * @param queryinfo 页码，页数，查询类容
-     */
+    //分页查询
     Result findPage(Queryinfo queryinfo);
 
     Result insert(SsGoods ssGoods);
@@ -25,6 +22,9 @@ public interface SsGoodsService {
     Result update(SsGoods ssGoods);
 
     Result findById(int id);
+
+    //根据id查询商品，返回的是goods类型
+    SsGoods findGoodsByid(int id);
 
     Result findSwiper();
 
@@ -38,6 +38,10 @@ public interface SsGoodsService {
 
     Result updateSwiper(int id,boolean swiper);
 
+    void updateGoodsTotal(int goodsId,int goodsTotal,int goodsSales);
 
+    List<SsGoods> findsGoodsBySales();
+
+    void changeHotToDefault();
 
 }

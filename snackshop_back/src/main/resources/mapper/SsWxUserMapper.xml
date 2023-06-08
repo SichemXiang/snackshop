@@ -3,6 +3,22 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.snackshop.mapper.SsWxUserMapper">
 
+    <update id="updateWxUserInfo" parameterType="com.snackshop.entity.SsWxUser">
+        update ss_wx_users
+        <set>
+            <if test="phone!=null">
+                phone = #{phone},
+            </if>
+            <if test="wxNickName != null">
+                wx_nickName = #{wxNickName},
+            </if>
+            <if test="wxAvatarUrl!=null">
+                wx_avatarUrl = #{wxAvatarUrl}
+            </if>
+        </set>
+        where open_id = #{openId}
+    </update>
+
     <select id="findPage" resultType="com.snackshop.entity.SsWxUser">
         select * from ss_wx_users
         <if test="queryString != null and queryString.length > 0">

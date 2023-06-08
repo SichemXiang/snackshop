@@ -17,6 +17,7 @@ public class SsOrderDetail {
 
     private int goodsId;
 
+    //购买的数量
     private int goodsNumber;
 
     private BigDecimal goodsPrice;

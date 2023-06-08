@@ -2,6 +2,7 @@ package com.snackshop.service.impl;
 
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
+import com.snackshop.entity.SsDailyTransactionStats;
 import com.snackshop.entity.SsOrder;
 import com.snackshop.mapper.SsOrderMapper;
 import com.snackshop.service.SsOrderService;
@@ -31,9 +32,6 @@ public class SsOrderServiceImpl implements SsOrderService {
     public Page<SsOrder> findOrder(Queryinfo queryinfo) {
         PageHelper.startPage(queryinfo.getPageNumber(),queryinfo.getPageSize());
         Page<SsOrder> page = ssOrderMapper.findOrder(queryinfo.getQueryString());
-        //long total = page.getTotal();
-        //List<SsOrder> result = page.getResult();
-        //long pageNum = page.getPages();
         return  page;
     }
 
@@ -77,6 +75,11 @@ public class SsOrderServiceImpl implements SsOrderService {
     @Override
     public int selectOrderIdByOrderNum(String orderNum) {
         return ssOrderMapper.selectOrderIdByOrderNum(orderNum);
+    }
+
+    @Override
+    public List<SsDailyTransactionStats> getDailyTransactionStats(int days) {
+        return ssOrderMapper.getDailyTransactionStats(days);
     }
 
 

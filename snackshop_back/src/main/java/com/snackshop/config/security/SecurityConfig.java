@@ -49,12 +49,6 @@ public class SecurityConfig  {
 
 
 
-    //构造注入自定义UserDetailService
-    @Autowired
-    public SecurityConfig(JWTAuthorizationFilter authenticationFilter, MyUserDetailServiceImpl myUserDetailService) {
-        this.authenticationFilter = authenticationFilter;
-        this.myUserDetailService = myUserDetailService;
-    }
 
 
     //注入AuthenticationManager
@@ -81,10 +75,10 @@ public class SecurityConfig  {
                 .authorizeHttpRequests().anyRequest().authenticated();
 
         http.headers().cacheControl();
-        //token过滤器
-        http.addFilterBefore(authenticationFilter,UsernamePasswordAuthenticationFilter.class);
         //没有登陆或者权限不足
         http.exceptionHandling().authenticationEntryPoint(authenticationEntryPoint).accessDeniedHandler(accessDeniedHandler);
+        //token过滤器，在UsernamePasswordAuthenticationFilter之前
+        http.addFilterBefore(authenticationFilter,UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
 

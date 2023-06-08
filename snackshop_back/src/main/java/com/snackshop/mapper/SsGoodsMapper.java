@@ -2,8 +2,12 @@ package com.snackshop.mapper;
 
 import com.github.pagehelper.Page;
 import com.snackshop.entity.SsGoods;
+import com.snackshop.entity.SsGoodsSales;
+import com.snackshop.entity.SsOrder;
+import com.snackshop.entity.SsOrderDetail;
 
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -65,8 +69,23 @@ public interface SsGoodsMapper {
     void updateHot(int goodsId,boolean goodsHot);
 
     /**
+     *按照销量降序排列查找商品
+     */
+    List<SsGoods> findsGoodsBySales();
+
+    /**
      * 设计轮播图
      */
-
     void updateSwiper(int goodsId,boolean goodsSwiper);
+
+    /**
+     * 更新商品的库存和销量
+     */
+    void updateGoodsTotal(int goodsId,int goodsTotal,int goodsSales);
+
+    /**
+     *根时间查询商品的销量
+     */
+    List<SsGoodsSales> findSalesByTimeRange(int days);
+
 }

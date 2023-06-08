@@ -97,4 +97,10 @@ public class GoodsController {
         return goodsService.updateSwiper(id,swiper);
     }
 
+    @GetMapping("/defaultHot")
+    public Result defaultHot(){
+        goodsService.changeHotToDefault();
+        return Result.success("ok");
+    }
+
 }

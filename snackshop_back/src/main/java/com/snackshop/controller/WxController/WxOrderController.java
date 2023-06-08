@@ -2,16 +2,17 @@ package com.snackshop.controller.WxController;
 
 
 import com.github.pagehelper.Page;
+import com.snackshop.entity.SsGoods;
 import com.snackshop.entity.SsOrder;
 import com.snackshop.entity.SsOrderDetail;
 import com.snackshop.properties.WeixinpayProperties;
+import com.snackshop.service.SsGoodsService;
 import com.snackshop.service.SsOrderDetailService;
 import com.snackshop.service.SsOrderService;
 import com.snackshop.util.*;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
@@ -36,13 +37,13 @@ public class WxOrderController {
 
     private final TokenUtil tokenUtil;
 
-    private final WeixinpayProperties weixinpayProperties;
+    private final SsGoodsService goodsService;
 
-    public WxOrderController(SsOrderDetailService orderDetailService, SsOrderService orderService, TokenUtil tokenUtil, WeixinpayProperties weixinpayProperties) {
+    public WxOrderController(SsOrderDetailService orderDetailService, SsOrderService orderService, TokenUtil tokenUtil, WeixinpayProperties weixinpayProperties, SsGoodsService goodsService) {
         this.orderDetailService = orderDetailService;
         this.orderService = orderService;
         this.tokenUtil = tokenUtil;
-        this.weixinpayProperties = weixinpayProperties;
+        this.goodsService = goodsService;
     }
 
 
@@ -50,9 +51,6 @@ public class WxOrderController {
     @Transactional
     @PostMapping("/create")
     public Result createOrder(@RequestBody SsOrder order, @RequestHeader (value = "token") String token){
-        System.out.println("token===="+token);
-        System.out.println("ssorder====="+order);
-        System.out.println("openid====="+tokenUtil.getOpenid(token));
         order.setUserId(tokenUtil.getOpenid(token));
         //添加订单到数据库
         order.setOrderNum("snackshop"+ DateUtil.getCurrentDateStr());
@@ -60,7 +58,14 @@ public class WxOrderController {
         SsOrderDetail[] goods = order.getGoods();
         orderService.insert(order);
         int orderId = orderService.selectOrderIdByOrderNum(order.getOrderNum());
+        //获取订单的条目并存储到数据库
+        //同时修根据销量修改库存
         Arrays.stream(goods).forEach(orderDetail -> {
+            int goodsId = orderDetail.getGoodsId();
+            SsGoods warehouseGoods = goodsService.findGoodsByid(goodsId);
+            int goodsSales = warehouseGoods.getGoodsSales()+orderDetail.getGoodsNumber();
+            int goodsTotal = warehouseGoods.getGoodsTotal()-orderDetail.getGoodsNumber();
+            goodsService.updateGoodsTotal(goodsId,goodsTotal,goodsSales);
             orderDetail.setOrderId(orderId);
             orderDetailService.insert(orderDetail);
         });
@@ -102,9 +107,6 @@ public class WxOrderController {
         if(type == 0){
             //orderService.findOrder();
             pageOrder = orderService.findOrder(queryinfo);
-            log.info("总记录数"+pageOrder.getTotal());
-            log.info("总页数"+pageOrder.getPages());
-            log.info("当前页数据"+pageOrder.getResult());
             orderList = pageOrder.getResult();
             resultMap.put("total",pageOrder.getTotal());
             resultMap.put("totalPage",pageOrder.getPages());

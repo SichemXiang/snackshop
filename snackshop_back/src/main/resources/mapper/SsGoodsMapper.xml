@@ -34,6 +34,22 @@
         select * from ss_goods where goods_name like concat('%',#{string},'%');
     </select>
 
+    <select id="findSalesByTimeRange" resultType="com.snackshop.entity.SsGoodsSales"><![CDATA[
+        SELECT oi.goods_name, SUM(oi.goods_number) AS goods_sales
+        FROM ss_order o
+        JOIN ss_order_detail oi ON o.order_id = oi.order_id
+        WHERE o.pay_time >= CURDATE() - INTERVAL #{days} DAY AND o.pay_time < CURDATE()
+        GROUP BY oi.goods_id
+        ORDER BY goods_sales ASC;
+        ]]>
+    </select>
+
+    <select id="findsGoodsBySales" resultType="com.snackshop.entity.SsGoods">
+        SELECT *
+        FROM ss_goods
+        ORDER BY goods_sales DESC;
+    </select>
+
 
     <!--添加商品-->
     <insert id="insert" parameterType="com.snackshop.entity.SsGoods">
@@ -71,6 +87,7 @@
             <if test="goodsSales != null">
                 goods_sales = #{goodsSales}
             </if>
+
         </set>
         where goods_id = #{goodsId}
     </update>
@@ -88,6 +105,15 @@
         update ss_goods
         <set>
             goods_swiper = #{goodsSwiper}
+        </set>
+        where goods_id = #{goodsId}
+    </update>
+
+    <update id="updateGoodsTotal">
+        update ss_goods
+        <set>
+            goods_total = #{goodsTotal},
+            goods_sales = #{goodsSales}
         </set>
         where goods_id = #{goodsId}
     </update>

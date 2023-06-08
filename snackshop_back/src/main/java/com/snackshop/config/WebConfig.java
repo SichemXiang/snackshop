@@ -28,6 +28,7 @@ public class WebConfig implements WebMvcConfigurer {
         //和页面有关的静态目录都放在项目的static目录下
         registry.addResourceHandler("/**").addResourceLocations("classpath:/META-INF/resources/");
         registry.addResourceHandler("/image/**").addResourceLocations("file:C:\\Users\\1972454587\\Desktop\\finally\\code\\images\\goodsImages\\");
+        registry.addResourceHandler("/avatar/**").addResourceLocations("file:C:\\Users\\1972454587\\Desktop\\finally\\code\\images\\avatar\\");
     }
 
 

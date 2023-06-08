@@ -54,7 +54,7 @@ public class SsUserServiceImpl implements SsUserService {
         UserDetails userDetails = userDetailsService.loadUserByUsername(loginVo.getUsername());
         log.info("判断用户是否存在，密码是否正确");
         if(null == userDetails || !passwordEncoder.matches(loginVo.getPassword(),userDetails.getPassword() )){
-            return Result.fail("账号或密码错误，请重新输入");
+            return Result.fail("账号或密码错误！");
         }
         if(!userDetails.isEnabled()){
             return Result.fail("该账号已禁用");

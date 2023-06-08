@@ -2,6 +2,7 @@ package com.snackshop.mapper;
 
 
 import com.github.pagehelper.Page;
+import com.snackshop.entity.SsDailyTransactionStats;
 import com.snackshop.entity.SsOrder;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -52,7 +53,12 @@ public interface SsOrderMapper {
     /**
      * 根据ordernum 返回 orderId
      */
-    int selectOrderIdByOrderNum(String orderNum);
+    int selectOrderIdByOrderNum(String orderNsm);
+
+    /**
+     * 根据日期查询订单数和总收入
+     */
+    List<SsDailyTransactionStats> getDailyTransactionStats(int days);
 
 
 

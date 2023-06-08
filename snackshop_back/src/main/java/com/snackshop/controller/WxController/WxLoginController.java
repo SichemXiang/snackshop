@@ -4,6 +4,7 @@ import com.alibaba.fastjson2.JSON;
 import com.alibaba.fastjson2.JSONObject;
 import com.snackshop.entity.SsWxUser;
 import com.snackshop.service.SsWxUserService;
+import com.snackshop.util.RedisUtil;
 import com.snackshop.util.Result;
 import com.snackshop.util.StringUtils;
 import com.snackshop.util.TokenUtil;
@@ -38,6 +39,9 @@ import java.util.Map;
 @RequestMapping("/wx")
 public class WxLoginController {
 
+    @Autowired
+    private RedisUtil redisUtil;
+
     @Value("${wx.appid}")
     private String appid;
 
@@ -52,6 +56,7 @@ public class WxLoginController {
     public WxLoginController(TokenUtil tokenUtil) {
         this.tokenUtil = tokenUtil;
     }
+
     @Value("${jwt.tokenHead}")
     private String tokenHead;
 
@@ -82,7 +87,8 @@ public class WxLoginController {
         JSONObject jsonObject = JSON.parseObject(result);
         String openid = jsonObject.getString("openid");
         log.info("微信小程序唯一标识openid：{}",openid);
-        SsWxUser wxUser = wxUserService.findByOpenId(openid);
+        SsWxUser wxUser;
+        wxUser= wxUserService.findByOpenId(openid);
 
         //查询数据库，如果存在，登录，不存再则插入新用户
         if (wxUser == null){
@@ -94,6 +100,9 @@ public class WxLoginController {
 
         String avatar = wxUser.getWxAvatarUrl();
         String nickName = wxUser.getWxNickName();
+
+        redisUtil.setValuTime("userInfo_"+openid,wxUser.toString(),30);
+
         String token = tokenUtil.generateWxToken(openid);
         Map<String,Object> map = new HashMap<>(2);
         Map<String,String> userInfoMap = new HashMap<>();

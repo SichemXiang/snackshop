@@ -13,7 +13,7 @@
 
 <script setup>
 import {ref} from "vue";
-const squareUrl=ref("http://www.java1234.com/gg/avatar.jpg")
+const squareUrl=ref("https://pic3.zhimg.com/v2-285a104b2e557836ca09a386e6ee73d2_r.jpg")
 import { useStore } from "vuex";
 import { ElMessage, ElMessageBox } from "element-plus";
 const store = useStore();

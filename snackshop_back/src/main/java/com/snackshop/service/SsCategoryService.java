@@ -23,4 +23,6 @@ public interface SsCategoryService {
 
     List<SsCategory> findList();
 
+    String findCategoryNameById(int id);
+
 }

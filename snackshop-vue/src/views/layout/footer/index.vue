@@ -1,6 +1,6 @@
 <template>
   <div class="footer">
-    Copyright © xsz的垃圾毕业设计
+    Copyright © xsz email:1972454587@qq.com
   </div>
 </template>
 <script>

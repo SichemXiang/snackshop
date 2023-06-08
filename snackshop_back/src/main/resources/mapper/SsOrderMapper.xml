@@ -85,5 +85,13 @@
         select order_id from ss_order where order_num = #{orderNum}
     </select>
 
+    <select id="getDailyTransactionStats" resultType="com.snackshop.entity.SsDailyTransactionStats">
+        SELECT DATE(pay_time) AS transaction_date, COUNT(*) AS total_orders,SUM(total_price) AS daily_total_price
+        FROM ss_order
+        WHERE order_status = 2 AND pay_time >= CURDATE() - INTERVAL #{days} DAY
+        GROUP BY DATE(pay_time)
+        ORDER BY DATE(pay_time) ASC;
+    </select>
+
 
 </mapper>

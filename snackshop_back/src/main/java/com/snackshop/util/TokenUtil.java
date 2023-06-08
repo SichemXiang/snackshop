@@ -46,7 +46,7 @@ public class TokenUtil {
         return Jwts.builder()
                 .setClaims(map)
                 .signWith(SignatureAlgorithm.HS512,secret)
-                .setExpiration(new Date(System.currentTimeMillis()+expiration*1000))
+                .setExpiration(new Date(System.currentTimeMillis()+expiration*1000*6))
                 .compact();
 
     }

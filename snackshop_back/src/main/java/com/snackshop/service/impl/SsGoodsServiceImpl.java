@@ -3,6 +3,7 @@ package com.snackshop.service.impl;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.snackshop.entity.SsGoods;
+import com.snackshop.mapper.SsCategoryMapper;
 import com.snackshop.mapper.SsGoodsMapper;
 import com.snackshop.service.SsGoodsService;
 import com.snackshop.util.PageResult;
@@ -11,6 +12,7 @@ import com.snackshop.util.Result;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 
 import java.util.List;
 
@@ -26,6 +28,9 @@ public class SsGoodsServiceImpl implements SsGoodsService {
     @Autowired
     private SsGoodsMapper ssGoodsMapper;
 
+    @Autowired
+    private SsCategoryMapper ssCategoryMapper;
+
     @Override
     public Result findPage(Queryinfo queryinfo) {
         log.info("开始商品数据分页-->页码{},-->页数{},-->查询内容{}",queryinfo.getPageNumber(),queryinfo.getPageSize(),queryinfo.getQueryString());
@@ -33,6 +38,10 @@ public class SsGoodsServiceImpl implements SsGoodsService {
         Page<SsGoods> page = ssGoodsMapper.findPage(queryinfo.getQueryString());
         long total = page.getTotal();
         List<SsGoods> result = page.getResult();
+        for (SsGoods ssGoods : result) {
+            String name = ssCategoryMapper.findCategoryNameById(ssGoods.getCategoryId());
+            ssGoods.setCategoryName(name);
+        }
         long pageNum = page.getPages();
         log.info("查询的总条数-->{}",total);
         log.info("分页列表--{}",result);
@@ -61,6 +70,12 @@ public class SsGoodsServiceImpl implements SsGoodsService {
     public Result findById(int id) {
         return Result.success("查询成功",ssGoodsMapper.findById(id));
     }
+
+    @Override
+    public SsGoods findGoodsByid(int id) {
+        return ssGoodsMapper.findById(id);
+    }
+
 
     @Override
     public Result findSwiper() {
@@ -93,6 +108,30 @@ public class SsGoodsServiceImpl implements SsGoodsService {
     public Result updateSwiper(int id, boolean swiper) {
         ssGoodsMapper.updateSwiper(id,swiper);
         return Result.success("设置轮播图成功！");
+    }
+
+    @Override
+    public void updateGoodsTotal(int goodsId, int goodsTotal,int goodsSales) {
+        ssGoodsMapper.updateGoodsTotal(goodsId,goodsTotal,goodsSales);
+    }
+
+    @Override
+    public List<SsGoods> findsGoodsBySales() {
+        return ssGoodsMapper.findsGoodsBySales();
+    }
+
+    @Override
+    public void changeHotToDefault() {
+        List<SsGoods> list= ssGoodsMapper.findsGoodsBySales();
+        int hotGoodsNum = 1;
+        for(SsGoods goods:list){
+            boolean hot =false;
+            if(hotGoodsNum <=10){
+                hot = true;
+                hotGoodsNum++;
+            }
+            ssGoodsMapper.updateHot(goods.getGoodsId(),hot);
+        }
     }
 
 

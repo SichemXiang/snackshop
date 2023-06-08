@@ -40,6 +40,7 @@ public interface SsCategoryMapper {
      */
     List<SsCategory> findList();
 
+    String findCategoryNameById(int categoryId);
 
 
 

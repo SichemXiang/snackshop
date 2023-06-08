@@ -1,6 +1,7 @@
 package com.snackshop.service;
 
 import com.github.pagehelper.Page;
+import com.snackshop.entity.SsDailyTransactionStats;
 import com.snackshop.entity.SsOrder;
 import com.snackshop.util.Queryinfo;
 import com.snackshop.util.Result;
@@ -31,4 +32,6 @@ public interface SsOrderService{
     void delete(int orderId);
 
     int selectOrderIdByOrderNum(String orderNum);
+
+    List<SsDailyTransactionStats> getDailyTransactionStats(int days);
 }

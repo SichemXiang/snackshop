@@ -19,4 +19,6 @@ public interface SsWxUserService {
     Result insert(SsWxUser wxUser);
 
     SsWxUser findByOpenId(String openId);
+
+    void updateWxUserInfo(SsWxUser wxUser);
 }

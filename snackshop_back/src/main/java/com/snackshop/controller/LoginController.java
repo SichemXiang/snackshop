@@ -1,6 +1,8 @@
 package com.snackshop.controller;
 
+import com.snackshop.entity.SsUser;
 import com.snackshop.service.SsUserService;
+import com.snackshop.util.RedisUtil;
 import com.snackshop.util.Result;
 import com.snackshop.util.SecurityUtil;
 import com.snackshop.vo.LoginVo;
@@ -12,6 +14,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Permission;
 import java.security.Principal;
 
 /**
@@ -29,12 +32,16 @@ import java.security.Principal;
 public class LoginController {
 
     @Autowired
+    private RedisUtil redisUtil;
+
+    @Autowired
     private SsUserService userService;
 
 
     @ApiOperation(value = "登录接口")
     @PostMapping("/login")
     public Result login(@RequestBody LoginVo loginVo){
+        redisUtil.setValuTime("adda",20,30);
         return userService.login(loginVo);
     }
 
@@ -51,9 +58,12 @@ public class LoginController {
     @ApiOperation(value = "用户退出登录" )
     @GetMapping("/logout")
     public Result logout(){
+        //清除缓存
+        redisUtil.delKey("userInfo_"+SecurityUtil.getUsername());
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if(authentication != null){
             SecurityContextHolder.getContext().setAuthentication(null);
+
         }
         return Result.success("退出成功！");
     }

@@ -44,6 +44,10 @@
         select * from ss_category
         ORDER BY category_sort
     </select>
+    <select id="findCategoryNameById" resultType="java.lang.String">
+        select category_name from ss_category
+        where category_id = #{categoryId}
+    </select>
 
 
 </mapper>

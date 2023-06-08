@@ -79,6 +79,10 @@ const statusFormatter=(row)=>{
       return "待发货"
     case 3:
       return "退款/退货"
+    case 4:
+      return "运输中"
+    case 5:
+      return "已收货"
   }
 }
 

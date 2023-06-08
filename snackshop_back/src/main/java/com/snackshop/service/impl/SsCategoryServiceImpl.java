@@ -3,7 +3,6 @@ package com.snackshop.service.impl;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.snackshop.entity.SsCategory;
-import com.snackshop.entity.SsGoods;
 import com.snackshop.mapper.SsCategoryMapper;
 import com.snackshop.service.SsCategoryService;
 import com.snackshop.util.PageResult;
@@ -60,6 +59,11 @@ public class SsCategoryServiceImpl implements SsCategoryService {
     @Override
     public List<SsCategory> findList() {
         return categoryMapper.findList();
+    }
+
+    @Override
+    public String findCategoryNameById(int id) {
+        return categoryMapper.findCategoryNameById(id);
     }
 
 

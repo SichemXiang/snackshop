@@ -31,18 +31,18 @@ public class MyUserDetailServiceImpl implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        //在mapper中自定义登录，根据用户名获取用户信息
+        //在mapper中自定义登录，根据用户名 获取用户信息
         SsUser ssuser;
         if(redisUtil.haskey("userInfo_"+username)){
             //缓存中存在用户信息，直接从redis中取
             ssuser =  (SsUser)redisUtil.getValue("userInfo_"+username);
-            redisUtil.expire("userInfo_"+username,5);
+            redisUtil.expire("userInfo_"+username,30);
         }else {
             ssuser = ssUserMapper.findByUsername(username);
             if(ObjectUtils.isEmpty(ssuser)) {
-                throw new UsernameNotFoundException("用户不存在");
+                throw new UsernameNotFoundException("MyUserDetailServiceImpl:用户不存在");
             }
-            redisUtil.setValuTime("userInfo_"+username,ssuser,5);
+            redisUtil.setValuTime("userInfo_"+username,ssuser,30);
         }
 
         return ssuser;

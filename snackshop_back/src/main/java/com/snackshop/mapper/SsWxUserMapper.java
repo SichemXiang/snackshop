@@ -27,4 +27,9 @@ public interface SsWxUserMapper {
      */
     SsWxUser findByOpenId(String openId);
 
+    /**
+     * 修改个人信息
+     */
+    void updateWxUserInfo(SsWxUser wxUser);
+
 }

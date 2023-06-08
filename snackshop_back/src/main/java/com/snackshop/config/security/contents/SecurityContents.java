@@ -10,6 +10,10 @@ public class SecurityContents {
             //后端登陆接口
             "/user/login",
 
+            "/image/***",
+            "/goods/**",
+            "/avatar/**",
+
             //swagger相关
             "/swagger-ui.html",
             "/doc.html",
@@ -20,9 +24,8 @@ public class SecurityContents {
             "/configuration/ui",
             "/configuration/security",
 
-            //图片
-            "/image/***",
-            "/goods/**",
+
+
 
             //小程序接口
             "/wxGoods/**",

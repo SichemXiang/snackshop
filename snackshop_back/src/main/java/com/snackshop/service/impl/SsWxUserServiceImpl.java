@@ -47,4 +47,9 @@ public class SsWxUserServiceImpl implements SsWxUserService {
     public SsWxUser findByOpenId(String openId) {
         return wxUserMapper.findByOpenId(openId);
     }
+
+    @Override
+    public void updateWxUserInfo(SsWxUser wxUser) {
+        wxUserMapper.updateWxUserInfo(wxUser);
+    }
 }

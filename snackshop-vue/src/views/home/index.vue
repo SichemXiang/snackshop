@@ -1,17 +1,34 @@
 <template>
-  <div class="home">
-    欢迎使用sacnkshop微信小程序商城后台管理
+  <div>
+    <el-menu
+      mode="horizontal"
+      active-text-color="#409EFF"
+      class="menuContainer"
+      default-active="salesStatistic"
+      router
+      >
+      <el-menu-item index="salesStatistic">商品销量历史统计</el-menu-item>
+      <el-menu-item index="orderStatistic">订单历史统计</el-menu-item>
+
+    </el-menu>
+    <el-main>
+      <router-view/>
+    </el-main>
   </div>
 </template>
-<script>
-export default {
-  name: "index"
-};
+
+
+<script setup>
+
 </script>
+
 <style lang="scss" scoped>
-.home{
-  padding: 40px;
-  font-size: 30px;
-  font-weight: bold;
+
+.menuContainer{
+  margin-top: -30px;
+  margin-right: -15px;
+  margin-left: -15px;
 }
+
+
 </style>

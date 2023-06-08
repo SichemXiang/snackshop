@@ -26,6 +26,10 @@ public class SsGoods {
     private int categoryId;
 
 
+    @ApiModelProperty(value = "商品对应的分类名称")
+    private String categoryName;
+
+
     //商品对应的图片的id
     @ApiModelProperty(value = "商品对应图片")
     private String image;

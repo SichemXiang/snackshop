@@ -6,11 +6,12 @@
       </el-col>
       <el-button type="primary" :icon="Search" @click="findGoodsPage">搜索</el-button>
       <el-button type="primary" :icon="Plus" @click="handleDialog()">添加</el-button>
+      <el-button type="primary"  @click="DefaultHot()">按销量设置热卖</el-button>
     </el-row>
     <el-table :data="tableList" stripe style="width: 100%">
       <el-table-column type="index" label="序号" width="100" />
       <el-table-column prop="goodsName" label="名称" width="100" />
-      <el-table-column prop="categoryId" label="分类id" width="100" />
+      <el-table-column prop="categoryName" label="分类" width="100" />
       <el-table-column prop="image" label="图片" width="100" align="center">
         <template #default="scope">
           <img :src="getServerUrl()+'image/'+scope.row.image" width="80" height="80"/>
@@ -35,7 +36,7 @@
 
 
 
-      <el-table-column  label="操作" width="200" fixed="right">
+      <el-table-column  label="操作" width="200" >
         <template #default="scope">
           <el-button type="success" size="small" @click="handleImageDialogValue(scope.row)">更换图片</el-button>
           <el-button  type="primary" :icon="Edit" size="small" @click="handleDialog(scope.row.goodsId)"/>
@@ -78,6 +79,7 @@ const queryForm=ref({
   pageNumber: 1,
   pageSize: 10
 })
+
 const squareUrl=ref("http://www.java1234.com/gg/avatar.jpg")
 const total = ref(0)
 const tableList = ref([])
@@ -112,8 +114,26 @@ const hotChangeHandle=async (row)=>{
       type: 'error',
       message: res.data.message,
     })
-     await findGoodsPage();
   }
+  await findGoodsPage();
+
+}
+
+const DefaultHot=async ()=>{
+  let res=await axios.get("/goods/defaultHot");
+  if(res.data.flag===true){
+    ElMessage({
+      type: 'success',
+      message: '执行成功!'
+    })
+  }else{
+    ElMessage({
+      type: 'error',
+      message: res.data.message,
+    })
+  }
+  await findGoodsPage();
+
 }
 
 
@@ -129,8 +149,9 @@ const swiperChangeHandle=async (row)=>{
       type: 'error',
       message: res.data.message,
     })
-    await findGoodsPage();
+
   }
+  await findGoodsPage();
 }
 
 

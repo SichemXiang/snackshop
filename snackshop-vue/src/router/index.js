@@ -9,12 +9,26 @@ const routes = [
     path: "/",
     name: "首页",
     component: () => import( "../views/layout/index.vue"),
-    redirect:'/home',
+    redirect:'/salesStatistic',
     children:[
       {
         path: "/home",
         name: "首页",
-        component: () => import( "../views/home/index.vue")
+        component: () => import( "../views/home/index.vue"),
+        redirect:'/salesStatistic',
+        children:[
+          {
+            path:"/salesStatistic",
+            name:"salesStatistic",
+            component: () => import("../views/home/salesStatistic/salesStatistic.vue")
+          },
+          {
+            path:"/orderStatistic",
+            name:"orderStatistic",
+            component: () => import("../views/home/orderStatistic/orderStatistic.vue")
+          }
+
+        ]
       },
       {
         path: "/userManage",
